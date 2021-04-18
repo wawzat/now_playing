@@ -89,6 +89,20 @@ def StringToBytes(src):
     return converted
 
 
+def writeData(motor_num, value):
+    '''Function writes the command string to the  Stepper Arduino'''
+    try:
+        byteValue = StringToBytes(value)
+        #print(byteValue)
+        bus.write_i2c_block_data(addr_stepper, motor_num, byteValue)
+        #sleep(.02)
+    except OSError as e:
+        print("Stepper I2C Communication Error")
+        print(" ")
+        i2c_error_tracker()
+        pass
+
+
 def write_matrix(msg, display_num, led_write_time):
     '''Function writes the command string to the LED Arduino'''
     try:
@@ -127,6 +141,25 @@ def write_matrix(msg, display_num, led_write_time):
         pass
 
 
+def move_stepper(indicator_pos_1, indicator_pos_2, write_time):
+    '''Function prepares the command string and sends to WriteData()'''
+    # Format is XYYYY where X is motor number and YYYY is 1-4 digit indicator postion
+    elapsed_time = datetime.datetime.now() - write_time
+    if elapsed_time.total_seconds() > .2:
+        #command = indicator_pos_1
+        motor_num = 0x01 
+        position = indicator_pos_1
+        writeData(motor_num, position)
+        #print("B: " + str(indicator_pos_2))
+        sleep(.00005)
+        motor_num = 0x02
+        position = indicator_pos_2
+        writeData(motor_num, position)
+        #print("T: " + str(indicator_pos_2))
+        write_time = datetime.datetime.now()
+    return write_time
+
+
 def spotify_authenticate():
     token = util.prompt_for_user_token(
         config.USERNAME,
@@ -144,27 +177,32 @@ def get_track(token):
         results = sp.current_user_playing_track()
         json_formatted_str = json.dumps(results, indent=2)
         print(json_formatted_str)
+        progress_ms = results['progress_ms']
+        duration_ms = results['item']['duration_ms']
+        percent_complete = progress_ms / duration_ms * 100
         artist_name = results['item']['album']['artists'][0]['name']
         track_name = results['item']['name']
         album_name = results['item']['album']['name']
         album_string = f" {artist_name}  -  {album_name}  "
         track_string = f" {track_name} "
-        return album_string, track_string
+        return album_string, track_string, percent_complete
 
 # Main
 try:
     led_write_time_1 = datetime.datetime.now()
     led_write_time_2 = datetime.datetime.now()
+    write_time = datetime.datetime.now()
     GPIO.output(pwr_pin, GPIO.HIGH)
     sleep(4)
     token = spotify_authenticate()
     while True:
         #artist_name = "Z"
         #track_name = "X"
-        album_string, track_string = get_track(token)
+        album_string, track_string, percent_complete = get_track(token)
         led_write_time_1 = write_matrix(album_string, "1", led_write_time_1)
         sleep(1)
         led_write_time_2 = write_matrix(track_string, "0", led_write_time_2)
+        write_time = move_stepper(percent_complete, 0, write_time)
         sleep(8)
 except KeyboardInterrupt:
     print(" ")
