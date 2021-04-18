@@ -1,28 +1,21 @@
 # Get currently playing track from Spotify
-# James S. Lucas - 20200808
+# James S. Lucas - 20210418
 
 import RPi.GPIO as GPIO
 #from datetime import date
-#import re
 import config
-import sys
+#import sys
 import datetime
-from operator import itemgetter
+#from operator import itemgetter
 from smbus import SMBus
 import atexit
 from time import sleep
-import statistics
+#import statistics
 from random import randint
-#import re
-#from luma.led_matrix.device import max7219
-#from luma.core.interface.serial import spi, noop
-#from luma.core.render import canvas
-#from luma.core.virtual import viewport
-#from luma.core.legacy import text, show_message
-#from luma.core.legacy.font import proportional, CP437_FONT, TINY_FONT, SINCLAIR_FONT, LCD_FONT
 import spotipy
 import spotipy.util as util
-import spotipy.oauth2 as oauth2
+#import spotipy.oauth2 as oauth2
+import json
 
 scope = "user-library-read user-read-playback-state user-read-currently-playing"
 
