@@ -49,6 +49,7 @@ def exit_function():
     Called by exception handler'''
     print(" ")
     print("End by atexit")
+    GPIO.setmode(GPIO.BCM)
     global pwr_pin
     write_time = datetime.datetime.now()
     sleep(1)
@@ -168,7 +169,7 @@ try:
         track_name = "X"
         #track_name = get_track(token)
         print(track_name)
-        led_write_time_1 = write_matrix(artist_name, "1", led_write_time_1)
+        #led_write_time_1 = write_matrix(artist_name, "1", led_write_time_1)
         sleep(2)
         led_write_time_2 = write_matrix(track_name, "0", led_write_time_2)
         sleep(13)
