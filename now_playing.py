@@ -9,16 +9,17 @@ import sys
 import datetime
 from operator import itemgetter
 from smbus import SMBus
+import atexit
 from time import sleep
 import statistics
 from random import randint
 #import re
-from luma.led_matrix.device import max7219
-from luma.core.interface.serial import spi, noop
-from luma.core.render import canvas
-from luma.core.virtual import viewport
-from luma.core.legacy import text, show_message
-from luma.core.legacy.font import proportional, CP437_FONT, TINY_FONT, SINCLAIR_FONT, LCD_FONT
+#from luma.led_matrix.device import max7219
+#from luma.core.interface.serial import spi, noop
+#from luma.core.render import canvas
+#from luma.core.virtual import viewport
+#from luma.core.legacy import text, show_message
+#from luma.core.legacy.font import proportional, CP437_FONT, TINY_FONT, SINCLAIR_FONT, LCD_FONT
 import spotipy
 import spotipy.util as util
 import spotipy.oauth2 as oauth2
@@ -31,6 +32,8 @@ GPIO.setmode(GPIO.BCM)
 GPIO.setup(pwr_pin, GPIO.OUT)
 GPIO.output(pwr_pin, GPIO.LOW)
 
+# Stepper Arduino I2C address
+addr_stepper = 0x08
 
 # LED Matrix Arduino I2C address
 addr_led = 0x06
@@ -39,6 +42,25 @@ bus = SMBus(1)
 
 num_i2c_errors = 0
 last_i2c_error_time = datetime.datetime.now()
+
+
+def exit_function():
+    '''Function disconnects stream and resets motor positions to zero. 
+    Called by exception handler'''
+    print(" ")
+    print("End by atexit")
+    global pwr_pin
+    write_time = datetime.datetime.now()
+    sleep(1)
+    GPIO.output(pwr_pin, GPIO.LOW)
+    sleep(1)
+    GPIO.cleanup()
+    sleep(1)
+   #system("stty echo")
+    exit()
+
+
+atexit.register(exit_function)
 
 
 def i2c_error_tracker():
@@ -136,16 +158,20 @@ def get_track(token):
 
 # Main
 try:
-    led_write_time_2 = 0
+    led_write_time_1 = datetime.datetime.now()
+    led_write_time_2 = datetime.datetime.now()
     GPIO.output(pwr_pin, GPIO.HIGH)
     sleep(4)
     token = spotify_authenticate()
     while True:
+        artist_name = "Z"
         track_name = "X"
         #track_name = get_track(token)
         print(track_name)
+        led_write_time_1 = write_matrix(artist_name, "1", led_write_time_1)
+        sleep(2)
         led_write_time_2 = write_matrix(track_name, "0", led_write_time_2)
-        sleep(15)
+        sleep(13)
 except KeyboardInterrupt:
     print(" ")
     print("End by Ctrl-C")
