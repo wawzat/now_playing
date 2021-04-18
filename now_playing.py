@@ -50,6 +50,7 @@ def exit_function():
     print(" ")
     print("End by atexit")
     GPIO.setmode(GPIO.BCM)
+    GPIO.setup(pwr_pin, GPIO.OUT)
     global pwr_pin
     write_time = datetime.datetime.now()
     sleep(1)
@@ -153,9 +154,10 @@ def get_track(token):
         artist_name = results['item']['album']['artists'][0]['name']
         track_name = results['item']['name']
         album_name = results['item']['album']['name']
-        output_string = f"{artist_name} - {track_name} - {album_name}"
+        album_string = f"{artist_name} - {album_name}"
+        track_string = f"{track_name}"
         #print(output_string)
-        return track_name
+        return album_string, track_string
 
 # Main
 try:
@@ -165,13 +167,12 @@ try:
     sleep(4)
     token = spotify_authenticate()
     while True:
-        artist_name = "Z"
-        track_name = "X"
-        #track_name = get_track(token)
-        print(track_name)
-        #led_write_time_1 = write_matrix(artist_name, "1", led_write_time_1)
+        #artist_name = "Z"
+        #track_name = "X"
+        album_string, track_string = get_track(token)
+        led_write_time_1 = write_matrix(album_string, "1", led_write_time_1)
         sleep(2)
-        led_write_time_2 = write_matrix(track_name, "0", led_write_time_2)
+        led_write_time_2 = write_matrix(track_string, "0", led_write_time_2)
         sleep(13)
 except KeyboardInterrupt:
     print(" ")
