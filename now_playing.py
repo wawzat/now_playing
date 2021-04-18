@@ -165,7 +165,7 @@ try:
         led_write_time_1 = write_matrix(album_string, "1", led_write_time_1)
         sleep(1)
         led_write_time_2 = write_matrix(track_string, "0", led_write_time_2)
-        sleep(13)
+        sleep(8)
 except KeyboardInterrupt:
     print(" ")
     print("End by Ctrl-C")
