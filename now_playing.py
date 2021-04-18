@@ -120,7 +120,7 @@ def write_matrix(msg, display_num, led_write_time):
                 end_range = num_chars
                 msg = byteValue[strt_range : end_range]
                 msg.append(ord(display_num))
-                print(str(strt_range) + "/" + str(end_range) + "/" + str(len(msg)))
+                #print(str(strt_range) + "/" + str(end_range) + "/" + str(len(msg)))
                 bus.write_i2c_block_data(addr_led, 0x02, msg)
                 led_write_time = datetime.datetime.now()
                 sleep(.0005)
@@ -149,14 +149,13 @@ def get_track(token):
     if token:
         sp = spotipy.Spotify(auth=token)
         results = sp.current_user_playing_track()
-        #json_formatted_str = json.dumps(results, indent=2)
-        #print(json_formatted_str)
+        json_formatted_str = json.dumps(results, indent=2)
+        print(json_formatted_str)
         artist_name = results['item']['album']['artists'][0]['name']
         track_name = results['item']['name']
         album_name = results['item']['album']['name']
-        album_string = f"{artist_name} - {album_name}"
-        track_string = f"{track_name}"
-        #print(output_string)
+        album_string = f" {artist_name}  -  {album_name}  "
+        track_string = f" {track_name} "
         return album_string, track_string
 
 # Main
@@ -171,7 +170,7 @@ try:
         #track_name = "X"
         album_string, track_string = get_track(token)
         led_write_time_1 = write_matrix(album_string, "1", led_write_time_1)
-        sleep(2)
+        sleep(1)
         led_write_time_2 = write_matrix(track_string, "0", led_write_time_2)
         sleep(13)
 except KeyboardInterrupt:
