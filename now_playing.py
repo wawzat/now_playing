@@ -141,7 +141,7 @@ try:
     sleep(4)
     token = spotify_authenticate()
     while True:
-        track_name = "The presidents of the united states of America"
+        track_name = "1"
         #track_name = get_track(token)
         print(track_name)
         led_write_time_2 = write_matrix(track_name, "0", led_write_time_2)
