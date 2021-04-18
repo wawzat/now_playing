@@ -143,7 +143,7 @@ try:
     while True:
         output_string = get_track(token)
         led_write_time_2 = write_matrix(output_string, "0", led_write_time_2)
-        sleep(5)
+        sleep(15)
 except KeyboardInterrupt:
     print(" ")
     print("End by Ctrl-C")
