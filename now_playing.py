@@ -131,7 +131,7 @@ def get_track(token):
         track_name = results['item']['name']
         album_name = results['item']['album']['name']
         output_string = f"{artist_name} - {track_name} - {album_name}"
-        print(output_string)
+        #print(output_string)
         return track_name
 
 # Main
@@ -142,6 +142,7 @@ try:
     token = spotify_authenticate()
     while True:
         output_string = get_track(token)
+        print(output_string)
         led_write_time_2 = write_matrix(output_string, "0", led_write_time_2)
         sleep(15)
 except KeyboardInterrupt:
