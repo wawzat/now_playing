@@ -179,7 +179,7 @@ def get_track(token):
         #print(json_formatted_str)
         progress_ms = results['progress_ms']
         duration_ms = results['item']['duration_ms']
-        percent_complete = int(progress_ms / duration_ms * 100)
+        percent_complete = progress_ms / duration_ms * 100
         print("{:.1f}%".format(percent_complete))
         artist_name = results['item']['album']['artists'][0]['name']
         track_name = results['item']['name']
@@ -201,7 +201,7 @@ try:
         led_write_time_1 = write_matrix(album_string, "1", led_write_time_1)
         sleep(0.5)
         led_write_time_2 = write_matrix(track_string, "0", led_write_time_2)
-        write_time = move_stepper("0", str(percent_complete * 324), write_time)
+        write_time = move_stepper("0", str(percent_complete * 200 + 150), write_time)
         sleep(5)
 except KeyboardInterrupt:
     print(" ")
