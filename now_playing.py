@@ -198,6 +198,7 @@ try:
     led_write_time_2 = datetime.datetime.now()
     write_time = datetime.datetime.now()
     GPIO.output(pwr_pin, GPIO.HIGH)
+    write_time = move_stepper("0", "0", write_time)
     sleep(4)
     token = spotify_authenticate()
     while True:
@@ -205,7 +206,7 @@ try:
         led_write_time_1 = write_matrix(album_string, "1", led_write_time_1)
         sleep(0.5)
         led_write_time_2 = write_matrix(track_string, "0", led_write_time_2)
-        write_time = move_stepper("0", str(percent_complete * 20 + 150), write_time)
+        write_time = move_stepper("0", str(int(percent_complete * 20)), write_time)
         sleep(5)
 except KeyboardInterrupt:
     print(" ")
