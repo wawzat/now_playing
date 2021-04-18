@@ -179,7 +179,7 @@ def get_track(token):
         print(json_formatted_str)
         progress_ms = results['progress_ms']
         duration_ms = results['item']['duration_ms']
-        percent_complete = progress_ms / duration_ms * 100
+        percent_complete = int(progress_ms / duration_ms * 100)
         artist_name = results['item']['album']['artists'][0]['name']
         track_name = results['item']['name']
         album_name = results['item']['album']['name']
