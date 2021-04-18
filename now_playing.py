@@ -202,7 +202,7 @@ try:
         led_write_time_1 = write_matrix(album_string, "1", led_write_time_1)
         sleep(1)
         led_write_time_2 = write_matrix(track_string, "0", led_write_time_2)
-        write_time = move_stepper(percent_complete, 0, write_time)
+        write_time = move_stepper(str(percent_complete), "0", write_time)
         sleep(8)
 except KeyboardInterrupt:
     print(" ")
