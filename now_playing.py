@@ -140,7 +140,7 @@ try:
     token = spotify_authenticate()
     while True:
         output_string = get_track(token)
-        self.led_write_time_2 = write_matrix(output_string, "0", self.led_write_time_2)
+        led_write_time_2 = write_matrix(output_string, "0", self.led_write_time_2)
         sleep(5)
 except KeyboardInterrupt:
     print(" ")
