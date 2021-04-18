@@ -49,9 +49,9 @@ def exit_function():
     Called by exception handler'''
     print(" ")
     print("End by atexit")
+    global pwr_pin
     GPIO.setmode(GPIO.BCM)
     GPIO.setup(pwr_pin, GPIO.OUT)
-    global pwr_pin
     write_time = datetime.datetime.now()
     sleep(1)
     GPIO.output(pwr_pin, GPIO.LOW)
