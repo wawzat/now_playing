@@ -132,7 +132,7 @@ def get_track(token):
         album_name = results['item']['album']['name']
         output_string = f"{artist_name} - {track_name} - {album_name}"
         print(output_string)
-        return output_string
+        return track_name
 
 # Main
 try:
