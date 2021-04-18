@@ -45,8 +45,12 @@ def exit_function():
     global pwr_pin
     GPIO.setmode(GPIO.BCM)
     GPIO.setup(pwr_pin, GPIO.OUT)
+    indicator_pos_1 = 0
+    indicator_pos_2 = 0
     write_time = datetime.datetime.now()
     sleep(1)
+    write_time = move_stepper(str(indicator_pos_1), str(indicator_pos_2), write_time)
+    sleep(4)
     GPIO.output(pwr_pin, GPIO.LOW)
     sleep(1)
     GPIO.cleanup()
@@ -201,7 +205,7 @@ try:
         led_write_time_1 = write_matrix(album_string, "1", led_write_time_1)
         sleep(0.5)
         led_write_time_2 = write_matrix(track_string, "0", led_write_time_2)
-        write_time = move_stepper("0", str(percent_complete * 200 + 150), write_time)
+        write_time = move_stepper("0", str(percent_complete * 20 + 150), write_time)
         sleep(5)
 except KeyboardInterrupt:
     print(" ")
