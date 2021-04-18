@@ -137,11 +137,11 @@ def get_track(token):
 # Main
 try:
     led_write_time_2 = 0
-    GPIO.output(pwr_pin, GPIO.HIGH)
+    #GPIO.output(pwr_pin, GPIO.HIGH)
     sleep(4)
     token = spotify_authenticate()
     while True:
-        track_name = "123"
+        track_name = "X"
         #track_name = get_track(token)
         print(track_name)
         led_write_time_2 = write_matrix(track_name, "0", led_write_time_2)
