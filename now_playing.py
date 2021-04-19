@@ -187,10 +187,11 @@ def get_track(sp):
     artist_name = results['item']['album']['artists'][0]['name']
     track_name = results['item']['name']
     album_name = results['item']['album']['name']
+    popularity = results['item']['album']['popularity']
     #album_string = f" -  {artist_name}  -  {album_name}  - "
     album_string = f" {artist_name} "
     track_string = f" {track_name} "
-    return album_string, track_string, percent_complete
+    return album_string, track_string, percent_complete, popularity
 
 # Main
 try:
@@ -203,14 +204,14 @@ try:
     sleep(4)
     sp = spotify_authenticate()
     while True:
-        album_string, track_string, percent_complete = get_track(sp)
+        album_string, track_string, percent_complete, popularity = get_track(sp)
         if previous_track_string != track_string:
             previous_track_string = track_string[:]
             led_write_time_1 = write_matrix(album_string, "1", led_write_time_1)
             sleep(3)
             led_write_time_2 = write_matrix(track_string, "0", led_write_time_2)
         sleep(5)
-        write_time = move_stepper("0", str(int(percent_complete * 22 + 150)), write_time)
+        write_time = move_stepper(str(int(popularity * 22 + 150)), str(int(percent_complete * 22 + 150)), write_time)
 except KeyboardInterrupt:
     print(" ")
     print("End by Ctrl-C")
