@@ -178,19 +178,22 @@ def spotify_authenticate():
 
 def get_track(sp):
     results = sp.current_user_playing_track()
-    json_formatted_str = json.dumps(results, indent=2)
-    print(json_formatted_str)
-    progress_ms = results['progress_ms']
-    duration_ms = results['item']['duration_ms']
-    percent_complete = progress_ms / duration_ms * 100
-    print("{:.1f}%".format(percent_complete))
-    artist_name = results['item']['album']['artists'][0]['name']
-    track_name = results['item']['name']
-    album_name = results['item']['album']['name']
-    popularity = results['item']['popularity']
-    #album_string = f" -  {artist_name}  -  {album_name}  - "
-    album_string = f" {artist_name} "
-    track_string = f" {track_name} "
+    #json_formatted_str = json.dumps(results, indent=2)
+    #print(json_formatted_str)
+    if results:
+        progress_ms = results['progress_ms']
+        duration_ms = results['item']['duration_ms']
+        percent_complete = progress_ms / duration_ms * 100
+        print("{:.1f}%".format(percent_complete))
+        artist_name = results['item']['album']['artists'][0]['name']
+        track_name = results['item']['name']
+        album_name = results['item']['album']['name']
+        popularity = results['item']['popularity']
+        #album_string = f" -  {artist_name}  -  {album_name}  - "
+        album_string = f" {artist_name} "
+        track_string = f" {track_name} "
+    else:
+        album_string, track_string, percent_complete, popularity = False, False, False, False
     return album_string, track_string, percent_complete, popularity
 
 # Main
@@ -205,15 +208,16 @@ try:
     sp = spotify_authenticate()
     while True:
         album_string, track_string, percent_complete, popularity = get_track(sp)
-        if previous_track_string != track_string:
-            previous_track_string = track_string[:]
-            led_write_time_1 = write_matrix(album_string, "1", led_write_time_1)
-            sleep(1)
-            led_write_time_2 = write_matrix(track_string, "0", led_write_time_2)
-            sleep(0.5)
+        if album_string != False and track_string != False:
+            if previous_track_string != track_string:
+                previous_track_string = track_string[:]
+                led_write_time_1 = write_matrix(album_string, "1", led_write_time_1)
+                sleep(1)
+                led_write_time_2 = write_matrix(track_string, "0", led_write_time_2)
+                sleep(0.5)
+                write_time = move_stepper(str(int(popularity * 22 + 150)), str(int(percent_complete * 22 + 150)), write_time)
+            sleep(5)
             write_time = move_stepper(str(int(popularity * 22 + 150)), str(int(percent_complete * 22 + 150)), write_time)
-        sleep(5)
-        write_time = move_stepper(str(int(popularity * 22 + 150)), str(int(percent_complete * 22 + 150)), write_time)
 except KeyboardInterrupt:
     print(" ")
     print("End by Ctrl-C")
