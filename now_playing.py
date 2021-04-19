@@ -187,7 +187,7 @@ def get_track(sp):
     artist_name = results['item']['album']['artists'][0]['name']
     track_name = results['item']['name']
     album_name = results['item']['album']['name']
-    popularity = results['item']['album']['popularity']
+    popularity = results['item']['popularity']
     #album_string = f" -  {artist_name}  -  {album_name}  - "
     album_string = f" {artist_name} "
     track_string = f" {track_name} "
