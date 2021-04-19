@@ -163,7 +163,7 @@ def move_stepper(indicator_pos_1, indicator_pos_2, write_time):
     return write_time
 
 
-def spotify_authenicate():
+def spotify_authenticate():
     try:
         sp = spotipy.Spotify(auth_manager = SpotifyOAuth
             (
