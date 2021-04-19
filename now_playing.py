@@ -178,8 +178,8 @@ def spotify_authenticate():
 
 def get_track(sp):
     results = sp.current_user_playing_track()
-    #json_formatted_str = json.dumps(results, indent=2)
-    #print(json_formatted_str)
+    json_formatted_str = json.dumps(results, indent=2)
+    print(json_formatted_str)
     progress_ms = results['progress_ms']
     duration_ms = results['item']['duration_ms']
     percent_complete = progress_ms / duration_ms * 100
