@@ -172,25 +172,24 @@ def spotify_authenticate():
         client_secret=config.SPOTIPY_CLIENT_SECRET,
         redirect_uri='http://localhost:8080'
         )
-    return token
+    sp = spotipy.Spotify(auth=token)
+    return sp
 
 
-def get_track(token):
-    if token:
-        sp = spotipy.Spotify(auth=token)
-        results = sp.current_user_playing_track()
-        #json_formatted_str = json.dumps(results, indent=2)
-        #print(json_formatted_str)
-        progress_ms = results['progress_ms']
-        duration_ms = results['item']['duration_ms']
-        percent_complete = progress_ms / duration_ms * 100
-        print("{:.1f}%".format(percent_complete))
-        artist_name = results['item']['album']['artists'][0]['name']
-        track_name = results['item']['name']
-        album_name = results['item']['album']['name']
-        album_string = f" {artist_name}  -  {album_name}  "
-        track_string = f" {track_name} "
-        return album_string, track_string, percent_complete, previous_pct_complete
+def get_track(sp):
+    results = sp.current_user_playing_track()
+    #json_formatted_str = json.dumps(results, indent=2)
+    #print(json_formatted_str)
+    progress_ms = results['progress_ms']
+    duration_ms = results['item']['duration_ms']
+    percent_complete = progress_ms / duration_ms * 100
+    print("{:.1f}%".format(percent_complete))
+    artist_name = results['item']['album']['artists'][0]['name']
+    track_name = results['item']['name']
+    album_name = results['item']['album']['name']
+    album_string = f"| {artist_name}  -  {album_name} |"
+    track_string = f" {track_name} "
+    return album_string, track_string, percent_complete
 
 # Main
 try:
@@ -201,9 +200,9 @@ try:
     GPIO.output(pwr_pin, GPIO.HIGH)
     write_time = move_stepper("0", "0", write_time)
     sleep(4)
-    token = spotify_authenticate()
+    sp = spotify_authenticate()
     while True:
-        album_string, track_string, percent_complete = get_track(token)
+        album_string, track_string, percent_complete = get_track(sp)
         pct_complete_change = percent_complete - previous_pct_complete
         if pct_complete_change < 1 or pct_complete_change > 33:
             previous_pct_complete = percent_complete
