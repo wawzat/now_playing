@@ -205,7 +205,8 @@ try:
         album_string, track_string, percent_complete = get_track(sp)
         pct_complete_change = percent_complete - previous_pct_complete
         if pct_complete_change < 10 or pct_complete_change > 33:
-            previous_pct_complete = percent_complete
+            if pct_complete_change > 33:
+                previous_pct_complete = percent_complete
             led_write_time_1 = write_matrix(album_string, "1", led_write_time_1)
             sleep(3)
             led_write_time_2 = write_matrix(track_string, "0", led_write_time_2)
