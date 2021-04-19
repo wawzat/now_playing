@@ -208,8 +208,10 @@ try:
         if previous_track_string != track_string:
             previous_track_string = track_string[:]
             led_write_time_1 = write_matrix(album_string, "1", led_write_time_1)
-            sleep(3)
+            sleep(1)
             led_write_time_2 = write_matrix(track_string, "0", led_write_time_2)
+            sleep(0.5)
+            write_time = move_stepper(str(int(popularity * 22 + 150)), str(int(percent_complete * 22 + 150)), write_time)
         sleep(5)
         write_time = move_stepper(str(int(popularity * 22 + 150)), str(int(percent_complete * 22 + 150)), write_time)
 except KeyboardInterrupt:
