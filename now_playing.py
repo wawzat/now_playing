@@ -190,23 +190,28 @@ def get_track(token):
         album_name = results['item']['album']['name']
         album_string = f" {artist_name}  -  {album_name}  "
         track_string = f" {track_name} "
-        return album_string, track_string, percent_complete
+        return album_string, track_string, percent_complete, previous_pct_complete
 
 # Main
 try:
     led_write_time_1 = datetime.datetime.now()
     led_write_time_2 = datetime.datetime.now()
     write_time = datetime.datetime.now()
+    previous_pct_complete = 0
     GPIO.output(pwr_pin, GPIO.HIGH)
     write_time = move_stepper("0", "0", write_time)
     sleep(4)
     token = spotify_authenticate()
     while True:
         album_string, track_string, percent_complete = get_track(token)
-        led_write_time_1 = write_matrix(album_string, "1", led_write_time_1)
-        sleep(0.5)
-        led_write_time_2 = write_matrix(track_string, "0", led_write_time_2)
-        write_time = move_stepper("0", str(int(percent_complete * 20)), write_time)
+        pct_complete_change = percent_complete - previous_pct_complete
+        if pct_complete_change < 1 or pct_complete_change > 33:
+            previous_pct_complete = percent_complete
+            led_write_time_1 = write_matrix(album_string, "1", led_write_time_1)
+            sleep(0.5)
+            led_write_time_2 = write_matrix(track_string, "0", led_write_time_2)
+            print("Change: " + str(pct_complete_change))
+        write_time = move_stepper("0", str(int(percent_complete * 22 + 150)), write_time)
         sleep(5)
 except KeyboardInterrupt:
     print(" ")
