@@ -210,8 +210,8 @@ try:
             sleep(1.5)
             led_write_time_2 = write_matrix(track_string, "0", led_write_time_2)
             print("Change: " + str(pct_complete_change))
-        write_time = move_stepper("0", str(int(percent_complete * 22 + 150)), write_time)
         sleep(5)
+        write_time = move_stepper("0", str(int(percent_complete * 22 + 150)), write_time)
 except KeyboardInterrupt:
     print(" ")
     print("End by Ctrl-C")
