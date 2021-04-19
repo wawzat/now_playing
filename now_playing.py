@@ -13,8 +13,10 @@ from time import sleep
 #import statistics
 from random import randint
 import spotipy
-import spotipy.util as util
-#import spotipy.oauth2 as oauth2
+from spotipy.oauth2 import SpotifyOAuth
+#import spotipy.util as util
+from spotipy.exceptions import SpotifyException
+
 import json
 
 
