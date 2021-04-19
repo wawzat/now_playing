@@ -177,7 +177,11 @@ def spotify_authenticate():
 
 
 def get_track(sp):
-    results = sp.current_user_playing_track()
+    try:
+        results = sp.current_user_playing_track()
+    except spotipy.client.SpotifyException:
+        sp = spotify_authenticate()
+        results = sp.current_user_playing_track()
     #json_formatted_str = json.dumps(results, indent=2)
     #print(json_formatted_str)
     if results:
