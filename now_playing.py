@@ -197,22 +197,18 @@ try:
     led_write_time_1 = datetime.datetime.now()
     led_write_time_2 = datetime.datetime.now()
     write_time = datetime.datetime.now()
-    previous_pct_complete = 0
+    previous_track_string = "NONE"
     GPIO.output(pwr_pin, GPIO.HIGH)
     write_time = move_stepper("0", "0", write_time)
     sleep(4)
     sp = spotify_authenticate()
     while True:
         album_string, track_string, percent_complete = get_track(sp)
-        pct_complete_change = percent_complete - previous_pct_complete
-        if pct_complete_change < 10 or pct_complete_change > 33:
-            if pct_complete_change > 33:
-                previous_pct_complete = percent_complete
+        if previous_track_string != track_string:
+            previous_track_string = track_string[:]
             led_write_time_1 = write_matrix(album_string, "1", led_write_time_1)
-            print(album_string)
             sleep(3)
             led_write_time_2 = write_matrix(track_string, "0", led_write_time_2)
-            print("Change: " + str(pct_complete_change))
         sleep(5)
         write_time = move_stepper("0", str(int(percent_complete * 22 + 150)), write_time)
 except KeyboardInterrupt:
