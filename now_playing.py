@@ -187,7 +187,8 @@ def get_track(sp):
     artist_name = results['item']['album']['artists'][0]['name']
     track_name = results['item']['name']
     album_name = results['item']['album']['name']
-    album_string = f" -  {artist_name}  -  {album_name}  - "
+    #album_string = f" -  {artist_name}  -  {album_name}  - "
+    album_string = f" {artist_name} "
     track_string = f" {track_name} "
     return album_string, track_string, percent_complete
 
