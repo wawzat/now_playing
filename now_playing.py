@@ -17,7 +17,6 @@ import spotipy.util as util
 #import spotipy.oauth2 as oauth2
 import json
 
-scope = "user-library-read user-read-playback-state user-read-currently-playing"
 
 pwr_pin = 27
 
@@ -164,15 +163,19 @@ def move_stepper(indicator_pos_1, indicator_pos_2, write_time):
     return write_time
 
 
-def spotify_authenticate():
-    token = util.prompt_for_user_token(
-        config.USERNAME,
-        scope,
-        client_id=config.SPOTIPY_CLIENT_ID,
-        client_secret=config.SPOTIPY_CLIENT_SECRET,
-        redirect_uri='http://localhost:8080'
-        )
-    sp = spotipy.Spotify(auth=token)
+def spotify_authenicate():
+    try:
+        sp = spotipy.Spotify(auth_manager = SpotifyOAuth
+            (
+            client_id=SPOTIPY_CLIENT_ID,
+            client_secret=SPOTIPY_CLIENT_SECRET,
+            redirect_uri=SPOTIPY_REDIRECT_URI,
+            scope=SCOPE
+            ))
+    except SpotifyException as e:
+        #if e.code == 429:
+        print(e.code, e.msg)
+        sleep(20)
     return sp
 
 
