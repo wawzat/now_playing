@@ -207,7 +207,7 @@ try:
         if pct_complete_change < 10 or pct_complete_change > 33:
             previous_pct_complete = percent_complete
             led_write_time_1 = write_matrix(album_string, "1", led_write_time_1)
-            sleep(1.5)
+            sleep(3)
             led_write_time_2 = write_matrix(track_string, "0", led_write_time_2)
             print("Change: " + str(pct_complete_change))
         sleep(5)
