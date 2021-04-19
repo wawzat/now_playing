@@ -187,7 +187,7 @@ def get_track(sp):
     artist_name = results['item']['album']['artists'][0]['name']
     track_name = results['item']['name']
     album_name = results['item']['album']['name']
-    album_string = f"| {artist_name}  -  {album_name} |"
+    album_string = f" -  {artist_name}  -  {album_name}  - "
     track_string = f" {track_name} "
     return album_string, track_string, percent_complete
 
@@ -204,10 +204,10 @@ try:
     while True:
         album_string, track_string, percent_complete = get_track(sp)
         pct_complete_change = percent_complete - previous_pct_complete
-        if pct_complete_change < 1 or pct_complete_change > 33:
+        if pct_complete_change < 10 or pct_complete_change > 33:
             previous_pct_complete = percent_complete
             led_write_time_1 = write_matrix(album_string, "1", led_write_time_1)
-            sleep(0.5)
+            sleep(1.5)
             led_write_time_2 = write_matrix(track_string, "0", led_write_time_2)
             print("Change: " + str(pct_complete_change))
         write_time = move_stepper("0", str(int(percent_complete * 22 + 150)), write_time)
