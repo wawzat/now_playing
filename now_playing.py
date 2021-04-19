@@ -16,7 +16,7 @@ import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 #import spotipy.util as util
 from spotipy.exceptions import SpotifyException
-
+from config import SPOTIPY_CLIENT_ID, SPOTIPY_CLIENT_SECRET, SPOTIPY_REDIRECT_URI, SCOPE
 import json
 
 
