@@ -225,11 +225,11 @@ try:
                 sleep(1)
                 led_write_time_2 = write_matrix(track_string, "0", led_write_time_2)
                 sleep(0.5)
-                write_time = move_stepper(str(int(popularity * 22 + 150)), str(int(percent_complete * 22)), write_time)
+                write_time = move_stepper(str(int(popularity * 22)), str(int(percent_complete * 22)), write_time)
             while ET <= 5:
                 sleep(1)
                 percent_complete = percent_complete + duration_pct_per_sec
-                write_time = move_stepper(str(int(popularity * 22 + 150)), str(int(percent_complete * 22)), write_time)
+                write_time = move_stepper(str(int(popularity * 22)), str(int(percent_complete * 22)), write_time)
                 ET += 1
 except KeyboardInterrupt:
     print(" ")
