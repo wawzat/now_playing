@@ -217,7 +217,7 @@ try:
     while True:
         ET = 0
         album_string, track_string, percent_complete, popularity, duration_ms = get_track(sp)
-        duration_pct_per_sec = duration_ms / 100 * 1000
+        duration_pct_per_sec = duration_ms / 100 / 1000
         if album_string != False and track_string != False:
             if previous_track_string != track_string:
                 previous_track_string = track_string[:]
