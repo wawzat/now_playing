@@ -16,6 +16,7 @@ import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 #import spotipy.util as util
 from spotipy.exceptions import SpotifyException
+from requests.exceptions import ReadTimeout
 from config import SPOTIPY_CLIENT_ID, SPOTIPY_CLIENT_SECRET, SPOTIPY_REDIRECT_URI, SCOPE
 import json
 
@@ -171,7 +172,8 @@ def spotify_authenticate():
             client_id=SPOTIPY_CLIENT_ID,
             client_secret=SPOTIPY_CLIENT_SECRET,
             redirect_uri=SPOTIPY_REDIRECT_URI,
-            scope=SCOPE
+            scope=SCOPE,
+            requests_timeout=10
             ))
     except SpotifyException as e:
         #if e.code == 429:
@@ -186,6 +188,11 @@ def get_track(sp):
     except spotipy.client.SpotifyException:
         sp = spotify_authenticate()
         results = sp.current_user_playing_track()
+    except ReadTimeout:
+        print('Spotify timed out...trying again...')
+        sleep(5)
+        results = sp.current_user_playing_track()
+
     #json_formatted_str = json.dumps(results, indent=2)
     #print(json_formatted_str)
     if results:
