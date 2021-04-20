@@ -19,7 +19,6 @@ from spotipy.exceptions import SpotifyException
 from config import SPOTIPY_CLIENT_ID, SPOTIPY_CLIENT_SECRET, SPOTIPY_REDIRECT_URI, SCOPE
 import json
 
-
 pwr_pin = 27
 
 GPIO.setmode(GPIO.BCM)
@@ -203,7 +202,7 @@ def get_track(sp):
         track_string = f" {track_name} "
     else:
         album_string, track_string, percent_complete, popularity = False, False, False, False
-    return album_string, track_string, percent_complete, popularity
+    return album_string, track_string, percent_complete, popularity, duration_ms
 
 # Main
 try:
@@ -216,7 +215,9 @@ try:
     sleep(4)
     sp = spotify_authenticate()
     while True:
-        album_string, track_string, percent_complete, popularity = get_track(sp)
+        ET = 0
+        album_string, track_string, percent_complete, popularity, duration_ms = get_track(sp)
+        duration_pct_per_sec = duration_ms / 100 * 1000
         if album_string != False and track_string != False:
             if previous_track_string != track_string:
                 previous_track_string = track_string[:]
@@ -225,8 +226,11 @@ try:
                 led_write_time_2 = write_matrix(track_string, "0", led_write_time_2)
                 sleep(0.5)
                 write_time = move_stepper(str(int(popularity * 22 + 150)), str(int(percent_complete * 22 + 150)), write_time)
-            sleep(5)
-            write_time = move_stepper(str(int(popularity * 22 + 150)), str(int(percent_complete * 22 + 150)), write_time)
+            while ET <= 5:
+                sleep(1)
+                percent_complete = percent_complete + duration_pct_per_sec`
+                write_time = move_stepper(str(int(popularity * 22 + 150)), str(int(percent_complete * 22 + 150)), write_time)
+                ET += 1
 except KeyboardInterrupt:
     print(" ")
     print("End by Ctrl-C")
