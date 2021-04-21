@@ -218,8 +218,9 @@ try:
     write_time = datetime.datetime.now()
     previous_track_string = "NONE"
     GPIO.output(pwr_pin, GPIO.HIGH)
-    write_time = move_stepper("0", "0", write_time)
     sleep(4)
+    write_time = move_stepper("0", "0", write_time)
+    sleep(1)
     sp = spotify_authenticate()
     while True:
         ET = 0
