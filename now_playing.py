@@ -208,7 +208,7 @@ def get_track(sp):
         album_string = f" {artist_name} "
         track_string = f" {track_name} "
     else:
-        album_string, track_string, percent_complete, popularity = False, False, False, False
+        album_string, track_string, percent_complete, popularity, duration_ms = False, False, False, False, False
     return album_string, track_string, percent_complete, popularity, duration_ms
 
 # Main
