@@ -193,8 +193,8 @@ def get_track(sp):
         sleep(5)
         results = sp.current_user_playing_track()
 
-    #json_formatted_str = json.dumps(results, indent=2)
-    #print(json_formatted_str)
+    json_formatted_str = json.dumps(results, indent=2)
+    print(json_formatted_str)
     if results:
         progress_ms = results['progress_ms']
         duration_ms = results['item']['duration_ms']
