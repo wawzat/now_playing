@@ -120,13 +120,15 @@ def write_matrix(msg, display_num, led_write_time):
              num_blocks = num_whole_blocks
         for b in range(num_blocks):
             if b <= (num_blocks - 2):
+                #if more than one block print the first block
                 #rem_chars = num_chars - ((b + 1) * 30)
                 strt_range = b * 30
                 end_range = strt_range + 30
                 msg = byteValue[strt_range : end_range]
-                bus.write_i2c_block_data(addr_led, 0x01, msg)
+                bus.write_i2c_block_data(addr_led, 0x1, msg)
                 sleep(.0005)
             else:
+                #print the first block if only one block or the last block if more than one
                 #rem_chars = 0
                 strt_range = b * 30
                 end_range = num_chars
@@ -134,7 +136,7 @@ def write_matrix(msg, display_num, led_write_time):
                 msg.append(ord(display_num))
                 #print(str(strt_range) + "/" + str(end_range) + "/" + str(len(msg)))
                 print(msg)
-                bus.write_i2c_block_data(addr_led, 0x02, msg)
+                bus.write_i2c_block_data(addr_led, 0x2, msg)
                 led_write_time = datetime.datetime.now()
                 sleep(.0005)
         return led_write_time
