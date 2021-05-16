@@ -236,9 +236,9 @@ try:
             if previous_track_string != track_string:
                 previous_track_string = track_string[:]
                 led_write_time_1 = write_matrix(album_string, "1", led_write_time_1)
-                sleep(1)
+                sleep(2)
                 led_write_time_2 = write_matrix(track_string, "0", led_write_time_2)
-                sleep(0.5)
+                sleep(1.2)
                 write_time = move_stepper(str(int(popularity * 21)), str(int(percent_complete * 21)), write_time)
             while ET <= 5:
                 sleep(1)
