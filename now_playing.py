@@ -113,9 +113,7 @@ def write_matrix(msg, display_num, led_write_time):
     try:
         byteValue = StringToBytes(msg)
         num_chars = len(byteValue)
-        print(num_chars)
         num_whole_blocks, chars_in_last_block = divmod(num_chars, 30)
-        #print(num_whole_blocks, chars_in_last_block)
         if chars_in_last_block > 0:
             num_blocks = num_whole_blocks + 1
         else:
@@ -133,6 +131,7 @@ def write_matrix(msg, display_num, led_write_time):
                 strt_range = b * 30
                 end_range = num_chars
                 msg = byteValue[strt_range : end_range]
+                print(msg)
                 msg.append(ord(display_num))
                 #print(str(strt_range) + "/" + str(end_range) + "/" + str(len(msg)))
                 bus.write_i2c_block_data(addr_led, 0x02, msg)
