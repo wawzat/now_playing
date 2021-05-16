@@ -113,6 +113,7 @@ def write_matrix(msg, display_num, led_write_time):
     try:
         byteValue = StringToBytes(msg)
         num_chars = len(byteValue)
+        print(num_chars)
         num_whole_blocks, chars_in_last_block = divmod(num_chars, 30)
         #print(num_whole_blocks, chars_in_last_block)
         if chars_in_last_block > 0:
